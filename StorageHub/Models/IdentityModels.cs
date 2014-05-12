@@ -7,6 +7,6 @@ namespace StorageHub.Models
     public class ApplicationUser : IdentityUser
     {
         public string Email { get; set; }
-        public ICollection<StorageService> StorageServices { get; set; }
+        public virtual ICollection<StorageService> StorageServices { get; set; }
     }   
 }

@@ -1,0 +1,42 @@
+﻿@model StorageHub.Models.StorageService
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>StorageService</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AccessToken)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccessToken)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RefreshToken)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RefreshToken)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
