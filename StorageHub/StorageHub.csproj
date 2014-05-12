@@ -171,11 +171,19 @@
     <Compile Include="Migrations\201405121746182_AddEmailToApplicationUser.Designer.cs">
       <DependentUpon>201405121746182_AddEmailToApplicationUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405121817543_AddStorageServiceModel.cs" />
+    <Compile Include="Migrations\201405121817543_AddStorageServiceModel.Designer.cs">
+      <DependentUpon>201405121817543_AddStorageServiceModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\StorageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utility\AppCredentials.cs" />
+    <Compile Include="Utility\ShortGuid.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -240,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405121746182_AddEmailToApplicationUser.resx">
       <DependentUpon>201405121746182_AddEmailToApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405121817543_AddStorageServiceModel.resx">
+      <DependentUpon>201405121817543_AddStorageServiceModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

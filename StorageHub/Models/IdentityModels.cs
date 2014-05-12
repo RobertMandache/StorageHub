@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 namespace StorageHub.Models
 {
@@ -6,13 +7,6 @@ namespace StorageHub.Models
     public class ApplicationUser : IdentityUser
     {
         public string Email { get; set; }
-    }
-
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-    {
-        public ApplicationDbContext()
-            : base("DefaultConnection")
-        {
-        }
-    }
+        public ICollection<StorageService> StorageServices { get; set; }
+    }   
 }
