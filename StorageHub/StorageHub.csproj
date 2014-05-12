@@ -167,6 +167,10 @@
     <Compile Include="Migrations\201405121718560_InitialCreate.Designer.cs">
       <DependentUpon>201405121718560_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405121746182_AddEmailToApplicationUser.cs" />
+    <Compile Include="Migrations\201405121746182_AddEmailToApplicationUser.Designer.cs">
+      <DependentUpon>201405121746182_AddEmailToApplicationUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -233,6 +237,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201405121718560_InitialCreate.resx">
       <DependentUpon>201405121718560_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405121746182_AddEmailToApplicationUser.resx">
+      <DependentUpon>201405121746182_AddEmailToApplicationUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
