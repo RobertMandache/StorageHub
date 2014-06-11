@@ -23,7 +23,7 @@ namespace StorageHub.Utility
                     ClientSecret = Utility.AppCredentials.GOOGLEDRIVE_APP_SECRET
                 },
                 Scopes = new[] { DriveService.Scope.Drive },
-                DataStore = new FileDataStore("Drive.Api.Auth.Store")
+                DataStore = new FileDataStore("StorageHub.Drive.Api.Auth.Store")
             });
 
         public override string GetUserId(Controller controller)
@@ -40,8 +40,7 @@ namespace StorageHub.Utility
             //    controller.Session["user"] = user;
             //}
             //return user.ToString();
-            return controller.User.Identity.GetUserName();
-            return System.Web.HttpContext.Current.User.Identity.GetUserId();
+            return controller.User.Identity.GetUserName();            
         }
 
         public override IAuthorizationCodeFlow Flow

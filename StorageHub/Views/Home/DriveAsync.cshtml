@@ -1,4 +1,4 @@
-﻿@model IEnumerable<StorageHub.Models.FileModel>
+﻿@model IEnumerable<Google.Apis.Drive.v2.Data.File>
 
 @{
     ViewBag.Title = "Drive";
@@ -6,6 +6,8 @@
 
 <table>
     <tr>
+        <th>Id</th>
+        <th>ParentId</th>
         <th>
             Title
         </th>
@@ -18,6 +20,11 @@
     @foreach (var file in Model)
     {
         <tr>
+            <td>@Html.DisplayFor(modelItem => file.Id)</td>
+            @if(file.Parents.Count != 0)
+            {
+                <td>@Html.DisplayFor(modelItem => file.Parents[0].Id)</td>
+            }
             <td>
                 @Html.DisplayFor(modelItem => file.Title)
             </td>
@@ -31,6 +38,7 @@
                          downloadUrl = file.DownloadUrl
                      })
             </td>
+            <td>@Html.DisplayFor(modelLink => file.WebContentLink)</td>
         </tr>
     }
 </table>

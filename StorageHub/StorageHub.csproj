@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DropNet">
+      <HintPath>..\packages\DropNet.1.9.6\lib\net40\DropNet.dll</HintPath>
+    </Reference>
     <Reference Include="Google.Apis">
       <HintPath>..\packages\Google.Apis.1.8.1\lib\net40\Google.Apis.dll</HintPath>
     </Reference>
@@ -70,6 +73,9 @@
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.16\lib\net45\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -218,17 +224,23 @@
     <Compile Include="Migrations\201405121817543_AddStorageServiceModel.Designer.cs">
       <DependentUpon>201405121817543_AddStorageServiceModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201406091333388_AddUserTokenAndUserSecretToStorageService.cs" />
+    <Compile Include="Migrations\201406091333388_AddUserTokenAndUserSecretToStorageService.Designer.cs">
+      <DependentUpon>201406091333388_AddUserTokenAndUserSecretToStorageService.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\StorageService.cs" />
+    <Compile Include="Models\StorageTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utility\AppCredentials.cs" />
     <Compile Include="Utility\DriveFlowMetadata.cs" />
     <Compile Include="Utility\ShortGuid.cs" />
+    <Compile Include="Utility\Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -251,7 +263,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -282,6 +296,7 @@
     <Content Include="Views\StorageManagement\Edit.cshtml" />
     <Content Include="Views\StorageManagement\Index.cshtml" />
     <Content Include="Views\Home\DriveAsync.cshtml" />
+    <Content Include="Views\StorageManagement\Manage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -303,6 +318,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405121817543_AddStorageServiceModel.resx">
       <DependentUpon>201405121817543_AddStorageServiceModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406091333388_AddUserTokenAndUserSecretToStorageService.resx">
+      <DependentUpon>201406091333388_AddUserTokenAndUserSecretToStorageService.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

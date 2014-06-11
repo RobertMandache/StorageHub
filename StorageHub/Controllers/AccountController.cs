@@ -294,6 +294,8 @@ namespace StorageHub.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
+            Session.Clear();
+            Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
 
