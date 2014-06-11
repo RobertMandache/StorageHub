@@ -1,5 +1,7 @@
-﻿using Google.Apis.Auth.OAuth2.Mvc;
+﻿using DropNet;
+using Google.Apis.Auth.OAuth2.Mvc;
 using Google.Apis.Drive.v2;
+using Google.Apis.Drive.v2.Data;
 using Google.Apis.Services;
 using System;
 using System.Collections.Generic;
@@ -12,9 +14,14 @@ using System.Web.Mvc;
 namespace StorageHub.Controllers
 {
     public class HomeController : Controller
-    {       
+    {     
+        [Authorize]
         public ActionResult Index()
         {
+            if (Session["DropBoxStatus"] == null)
+                return RedirectToAction("DropboxConnect", "StorageManagement");
+            if (Session["GoogleDriveStatus"] == null)
+                return RedirectToAction("GoogleDriveConnect", "StorageManagement");
             return View();
         }
 
@@ -37,32 +44,30 @@ namespace StorageHub.Controllers
         {
             ViewBag.Message = "Your drive page.";
 
-            var result = await new AuthorizationCodeMvcApp(this, new StorageHub.Utility.DriveFlowMetadata()).
-                    AuthorizeAsync(cancellationToken);
+            var driveService = (DriveService)Session["GoogleDriveService"];
 
-            if (result.Credential == null)
-                return new RedirectResult(result.RedirectUri);
-
-            var driveService = new DriveService(new BaseClientService.Initializer
+            List<File> results = new List<File>();
+            FilesResource.ListRequest request = driveService.Files.List();
+            //request.Q = "sharedWithMe != true";
+            request.Q = "trashed = false";
+            do
             {
-                HttpClientInitializer = result.Credential,
-                ApplicationName = "StorageHub"
-            });
+                try
+                {
+                    FileList files = request.Execute();
 
-            var listReq = driveService.Files.List();
-            listReq.Fields = "items/title,items/id,items/createdDate,items/downloadUrl,items/exportLinks";
-            var list = await listReq.ExecuteAsync();
-            var items =
-                (from file in list.Items
-                 select new StorageHub.Models.FileModel
-                 {
-                     Title = file.Title,
-                     Id = file.Id,
-                     CreatedDate = file.CreatedDate,
-                     DownloadUrl = file.DownloadUrl ??
-                                               (file.ExportLinks != null ? file.ExportLinks["application/pdf"] : null),
-                 }).OrderBy(f => f.Title).ToList();
-            return View(items);
+                    results.AddRange(files.Items);
+                    request.PageToken = files.NextPageToken;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occurred: " + e.Message);
+                    request.PageToken = null;
+                }
+            } while (!String.IsNullOrEmpty(request.PageToken));
+            return View(results);
         }
+
+    
     }
 }
