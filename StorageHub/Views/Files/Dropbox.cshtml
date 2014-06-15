@@ -1,0 +1,22 @@
+﻿@model StorageHub.Models.FileTreeViewModel
+
+@{
+    ViewBag.Header = "Files";
+}
+
+<div class="row r">
+    <div class="col-md-4">
+        <button onclick="location.href ='@Url.Action("ClearCache","Files")'"><i class="glyphicon glyphicon glyphicon-refresh"></i></button>
+        <ul class="topnav">
+            <li>
+                @Html.EditorFor(m => Model.FolderTrees)
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-8">
+        @Html.EditorFor(model => model.ContextFiles, "FileList")
+    </div>
+</div>
+
+
+
