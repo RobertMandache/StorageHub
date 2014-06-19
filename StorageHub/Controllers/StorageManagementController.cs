@@ -1,20 +1,20 @@
-﻿using System;
+﻿using DropNet;
+using Google.Apis.Auth.OAuth2.Mvc;
+using Google.Apis.Drive.v2;
+using Google.Apis.Drive.v2.Data;
+using Google.Apis.Services;
+using Microsoft.AspNet.Identity;
+using StorageHub.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using StorageHub.Models;
-using Microsoft.AspNet.Identity;
-using System.Threading.Tasks;
-using System.Threading;
-using Google.Apis.Auth.OAuth2.Mvc;
-using Google.Apis.Drive.v2;
-using Google.Apis.Services;
-using Google.Apis.Drive.v2.Data;
-using DropNet;
 
 namespace StorageHub.Controllers
 {    
@@ -24,12 +24,12 @@ namespace StorageHub.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: /StorageManagement/
-        public ActionResult Index()
-        {
-            string currentUserId = User.Identity.GetUserId();
-            var currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
-            return View(currentUser.StorageServices.ToList());
-        }
+        //public ActionResult Index()
+        //{
+        //    string currentUserId = User.Identity.GetUserId();
+        //    var currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+        //    return View(currentUser.StorageServices.ToList());
+        //}
 
         [HttpGet]
         public ActionResult Manage()
@@ -67,7 +67,7 @@ namespace StorageHub.Controllers
             db.StorageServices.Remove(storageservice);
             db.SaveChanges();
             StorageService.ClearServiceFromSession((int)serviceType);
-            return RedirectToAction("Index");
+            return RedirectToAction("Manage");
         }
 
         protected override void Dispose(bool disposing)
