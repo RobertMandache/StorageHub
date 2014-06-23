@@ -3,27 +3,28 @@
 @{
     ViewBag.Title = "Manage";
 }
+<div class="col-md-offset-2">
+    <h2>Manage</h2>
 
-<h2>Manage</h2>
-
-@Html.AntiForgeryToken()
-<h3>Google Drive</h3>
-@if (Model[1] == false)
-{
-    @Html.ActionLink("Add Google Drive Account", "DriveCreate", null, new { @class = "btn btn-default" });
-}
-else
-{
-    @Html.ActionLink("Remove Google Drive Account", "Delete", new { serviceType = 1 }, new { @class = "btn btn-default"});
-}
+    @Html.AntiForgeryToken()
+    <h3>Google Drive</h3>
+    @if (Model[1] == false)
+    {
+        @Html.ActionLink("Add Google Drive Account", "DriveCreate", null, new { @class = "btn btn-default" });
+    }
+    else
+    {
+        @Html.ActionLink("Remove Google Drive Account", "Delete", new { serviceType = 1 }, new { @class = "btn btn-default" });
+    }
 
 
-<h3>Dropbox</h3>
-@if(Model[2] == false)
-{
-    @Html.ActionLink("Add Dropbox Account", "DropboxCreate", null, new { @class = "btn btn-default" });
-}
-else
-{
-    @Html.ActionLink("Remove Dropbox Account", "Delete", new { serviceType = 2 }, new { @class = "btn btn-default" });
-}
+    <h3>Dropbox</h3>
+    @if (Model[2] == false)
+    {
+        @Html.ActionLink("Add Dropbox Account", "DropboxCreate", null, new { @class = "btn btn-default" });
+    }
+    else
+    {
+        @Html.ActionLink("Remove Dropbox Account", "Delete", new { serviceType = 2 }, new { @class = "btn btn-default" });
+    }
+</div>

@@ -29,8 +29,8 @@ namespace StorageHub
             //   consumerSecret: "");
 
             //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            //   appId: "813157725361099",
+            //   appSecret: "4d2693d2689c9142ef4d0ea4276b0ee9");
 
             //app.UseGoogleAuthentication();
         }

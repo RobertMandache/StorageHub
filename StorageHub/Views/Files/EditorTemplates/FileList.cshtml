@@ -1,0 +1,61 @@
+﻿@model List<StorageHub.Models.FileModel>
+
+<h3>@ViewBag.Header</h3>
+@if (Model.Count > 0)
+{
+    <table class="table table-striped">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Last Modified
+        </th>
+        <th>
+            Size
+        </th>
+        <th>
+            Source
+        </th>
+        <th>
+
+        </th>
+    </tr>
+    @foreach (var file in Model)
+    {
+        <tr>            
+            <td>
+                @if(@file.Icon != null)
+                {
+                    <img src="@file.Icon" />
+                } 
+            @Html.DisplayFor(modelItem => file.Name)</td>
+            <td>
+                @Html.DisplayFor(modelItem => file.LastModified)
+            </td>   
+            <td>@Html.DisplayFor(modelItem => file.Size)</td>  
+            @if(file.Source == 1)
+            { 
+                <td>Google Drive</td>
+            }
+            @if (file.Source == 2)
+            {
+                <td>Dropbox</td>
+            }
+            <td>
+                @if(file.DownloadUrl != null)
+                { 
+                <a href="@file.DownloadUrl">Download</a> 
+                }                                            
+                @if (file.ExternalUrl != null)
+                {
+                     <text>|</text><a href="@file.ExternalUrl" target="_blank">View</a> 
+                }
+                
+               
+            </td>
+        </tr>
+    }
+</table>
+}
+
