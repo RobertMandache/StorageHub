@@ -21,7 +21,10 @@ namespace StorageHub.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
+            string aesiv = @"!qaz2wsx#edc4rfv";
+            string clearText = "Ana are mere sau poarta push-up?";
+            string encrypted = Utility.Encryption.Encrypt(aesiv, clearText);
+            string decrypted = Utility.Encryption.Decrypt(encrypted);
             return View();
         }
 

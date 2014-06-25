@@ -1,10 +1,12 @@
 ﻿using DropNet;
+using DropNet.Authenticators;
 using Google.Apis.Auth.OAuth2.Mvc;
 using Google.Apis.Drive.v2;
 using Google.Apis.Drive.v2.Data;
 using Google.Apis.Services;
 using Microsoft.AspNet.Identity;
 using StorageHub.Models;
+using StorageHub.Utility;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -115,30 +117,34 @@ namespace StorageHub.Controllers
 
         public ActionResult DropboxCreate()
         {
-            var client = new DropNetClient(Utility.AppCredentials.DROPBOX_APP_KEY, Utility.AppCredentials.DROPBOX_APP_SECRET);            
-            client.GetToken();
+            var client = new DropNetClient(AppCredentials.DROPBOX_APP_KEY, AppCredentials.DROPBOX_APP_SECRET, DropNetClient.AuthenticationMethod.OAuth2);                     
             var callbackUrl = Url.Action("DropboxCallback", "StorageManagement", null, Request.Url.Scheme);
-            var url = client.BuildAuthorizeUrl(callbackUrl);            
-            Session["DropBoxClient"] = client;
+            string state = Guid.NewGuid().ToString();
+            Session["DropboxStateString"] = state;
+            var url = client.BuildAuthorizeUrl(OAuth2AuthorizationFlow.Code, callbackUrl, state);                      
             return Redirect(url);
         }
 
-        public ActionResult DropboxCallback()
+        public ActionResult DropboxCallback(string code, string state)
         {
-            DropNetClient cl = (DropNetClient)Session["DropBoxClient"];
-            var accessToken = cl.GetAccessToken();
+            var t = Session["DropboxStateString"];
+            if (!state.Equals(Session["DropboxStateString"]))
+                return new HttpUnauthorizedResult();
+            Session.Remove("DropboxStateString");
+            var client = new DropNetClient(AppCredentials.DROPBOX_APP_KEY, AppCredentials.DROPBOX_APP_SECRET, DropNetClient.AuthenticationMethod.OAuth2);
+            var callbackUrl = Url.Action("DropboxCallback", "StorageManagement", null, Request.Url.Scheme);
+            var accessToken = client.GetAccessToken(code, callbackUrl);
             string currentUserId = User.Identity.GetUserId();
             var currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
             StorageService dropboxService = new StorageService
             {
-                ServiceType = StorageService.ServiceTypes.Dropbox,
-                UserToken = accessToken.Token,
-                UserSecret = accessToken.Secret
+                ServiceType = StorageService.ServiceTypes.Dropbox,               
+                AccessToken = accessToken.Token
             };
             currentUser.StorageServices.Add(dropboxService);
             db.SaveChanges();
             Session["DropBoxStatus"] = StorageService.ServiceStatus.Connected;
-            Session["DropBoxClient"] = cl;            
+            Session["DropBoxClient"] = client;            
             return RedirectToAction("Index", "Home");
         }
 
@@ -155,7 +161,7 @@ namespace StorageHub.Controllers
             if (dropboxService != null)
             {
                 DropNetClient cl = new DropNetClient(
-                    Utility.AppCredentials.DROPBOX_APP_KEY, Utility.AppCredentials.DROPBOX_APP_SECRET, dropboxService.UserToken, dropboxService.UserSecret);
+                    Utility.AppCredentials.DROPBOX_APP_KEY, Utility.AppCredentials.DROPBOX_APP_SECRET, dropboxService.AccessToken);
                 Session["DropBoxStatus"] = StorageService.ServiceStatus.Connected;
                 Session["DropBoxClient"] = cl;
             }

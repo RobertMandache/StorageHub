@@ -230,6 +230,10 @@
     <Compile Include="Migrations\201406091333388_AddUserTokenAndUserSecretToStorageService.Designer.cs">
       <DependentUpon>201406091333388_AddUserTokenAndUserSecretToStorageService.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201406192149241_RemoveOAuth1Tokens.cs" />
+    <Compile Include="Migrations\201406192149241_RemoveOAuth1Tokens.Designer.cs">
+      <DependentUpon>201406192149241_RemoveOAuth1Tokens.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -242,6 +246,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utility\AppCredentials.cs" />
     <Compile Include="Utility\DriveFlowMetadata.cs" />
+    <Compile Include="Utility\Encryption.cs" />
     <Compile Include="Utility\ShortGuid.cs" />
     <Compile Include="Utility\Util.cs" />
   </ItemGroup>
@@ -328,6 +333,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201406091333388_AddUserTokenAndUserSecretToStorageService.resx">
       <DependentUpon>201406091333388_AddUserTokenAndUserSecretToStorageService.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406192149241_RemoveOAuth1Tokens.resx">
+      <DependentUpon>201406192149241_RemoveOAuth1Tokens.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

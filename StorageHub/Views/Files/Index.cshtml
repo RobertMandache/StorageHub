@@ -1,0 +1,38 @@
+﻿@model StorageHub.Models.FileTreeViewModel
+
+@{
+    ViewBag.Title = "Files";
+}
+
+<div class="row r">
+    <div class="col-md-4">
+        <button onclick="location.href ='@Url.Action("ClearCache","Files")'"><i class="glyphicon glyphicon glyphicon-refresh"></i></button>
+        <ul class="topnav">
+            <li>
+                @Html.EditorFor(m => Model.FolderTrees)
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-8">
+        @*@if(Model.Folder != null)
+        {
+            <div >
+            @using (Html.BeginForm("Upload", "Files", new { folderId = Model.Folder }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-inline">
+                    <div class="form-group">                        
+                        <input name="fileToUpload" type="file" />                                          
+                    </div>
+                    <div class="form-group">                        
+                        <input type="submit" value="Upload" class="btn btn-default" />                       
+                    </div>
+                </div>                
+            }
+            </div>
+        }*@        
+        @Html.EditorFor(model => model.ContextFiles, "FileList")
+    </div>
+</div>
+
+
