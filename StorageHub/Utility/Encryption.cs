@@ -9,20 +9,21 @@ namespace StorageHub.Utility
 {
     public class Encryption
     {
-        // 128bit(16byte)IV and Key
-        //private const string AesIV = @"!QAZ2WSX#EDC4RFV";
+        // 128bit(16byte)IV and Key        
         private const string AesKey = @"5TGB&YHN7UJM(IK<";
 
         /// <summary>
         /// AES Encryption
         /// </summary>
-        public static string Encrypt(string AesIV, string clearText)
+        public static string Encrypt(string clearText)
         {
+            if (clearText == null) return null;
             // AesCryptoServiceProvider
             AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
             aes.BlockSize = 128;
-            aes.KeySize = 128;
-            aes.IV = Encoding.UTF8.GetBytes(AesIV);
+            aes.KeySize = 128;            
+            
+            aes.GenerateIV();
             aes.Key = Encoding.UTF8.GetBytes(AesKey);
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.PKCS7;
@@ -35,8 +36,8 @@ namespace StorageHub.Utility
             {
                 byte[] dest = encrypt.TransformFinalBlock(src, 0, src.Length);
 
-                // Convert byte array to Base64 strings
-                return AesIV + Convert.ToBase64String(dest);
+                // Convert byte array to Base64 strings                
+                return Convert.ToBase64String(aes.IV) + Convert.ToBase64String(dest);
             }
         }
 
@@ -45,18 +46,19 @@ namespace StorageHub.Utility
         /// </summary>
         public  static string Decrypt(string cipherText)
         {
+            if (cipherText == null) return null;
             // AesCryptoServiceProvider
             AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
             aes.BlockSize = 128;
             aes.KeySize = 128;
-            string AesIV = cipherText.Substring(0, 16);
-            aes.IV = Encoding.UTF8.GetBytes(AesIV);
+            string AesIV = cipherText.Substring(0, 24);
+            aes.IV = Convert.FromBase64String(AesIV);
             aes.Key = Encoding.UTF8.GetBytes(AesKey);
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.PKCS7;
 
             // Convert Base64 strings to byte array
-            string actualCipherText = cipherText.Substring(16);
+            string actualCipherText = cipherText.Substring(24);
             byte[] src = System.Convert.FromBase64String(actualCipherText);
 
             // decryption

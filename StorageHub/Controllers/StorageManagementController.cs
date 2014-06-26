@@ -139,7 +139,7 @@ namespace StorageHub.Controllers
             StorageService dropboxService = new StorageService
             {
                 ServiceType = StorageService.ServiceTypes.Dropbox,               
-                AccessToken = accessToken.Token
+                AccessToken = Utility.Encryption.Encrypt(accessToken.Token)
             };
             currentUser.StorageServices.Add(dropboxService);
             db.SaveChanges();
@@ -160,8 +160,9 @@ namespace StorageHub.Controllers
             var dropboxService = currentUser.StorageServices.FirstOrDefault(x => x.ServiceType == StorageService.ServiceTypes.Dropbox);
             if (dropboxService != null)
             {
+                string accessToken = Utility.Encryption.Decrypt(dropboxService.AccessToken);
                 DropNetClient cl = new DropNetClient(
-                    Utility.AppCredentials.DROPBOX_APP_KEY, Utility.AppCredentials.DROPBOX_APP_SECRET, dropboxService.AccessToken);
+                    Utility.AppCredentials.DROPBOX_APP_KEY, Utility.AppCredentials.DROPBOX_APP_SECRET, accessToken);
                 Session["DropBoxStatus"] = StorageService.ServiceStatus.Connected;
                 Session["DropBoxClient"] = cl;
             }
