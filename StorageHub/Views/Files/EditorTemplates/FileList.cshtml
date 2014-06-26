@@ -45,11 +45,11 @@
             <td>
                 @if(file.DownloadUrl != null)
                 { 
-                <a href="@file.DownloadUrl">Download</a> 
+                <a href="@file.DownloadUrl">Download</a> <text>|</text>
                 }                                            
                 @if (file.ExternalUrl != null)
                 {
-                     <text>|</text><a href="@file.ExternalUrl" target="_blank">View</a> 
+                     <a href="@file.ExternalUrl" target="_blank">View</a> 
                 }
                 
                

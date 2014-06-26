@@ -81,6 +81,7 @@ namespace StorageHub.Controllers
             var y = StorageTree.GetDriveChildren(folderId);
             ViewBag.OpenFolder = folderId;
             //ViewBag.Header = folderId;
+            ViewBag.Source = StorageService.ServiceTypes.GoogleDrive;
             return View("Index", new FileTreeViewModel()
                 {
                     Folder = folderId,
@@ -88,9 +89,7 @@ namespace StorageHub.Controllers
                     ContextFiles = y
                 }
                 );
-        }
-
-        
+        }        
 
         public ActionResult Dropbox(string folderId, bool? queried, bool? getFiles)
         {
@@ -152,6 +151,7 @@ namespace StorageHub.Controllers
             }
             ViewBag.OpenFolder = folderId;
             ViewBag.Header = folderId;
+            ViewBag.Source = StorageService.ServiceTypes.Dropbox;
             return View("Index", new FileTreeViewModel()
                 {
                     Folder = folderId,
@@ -166,30 +166,42 @@ namespace StorageHub.Controllers
             Utility.Util.ClearDriveCache(userId);
             Utility.Util.ClearDropboxCache(userId);
             return RedirectToAction("Index");
-        }        
+        }
 
-        //public ActionResult Upload(string folderId, HttpPostedFileBase fileToUpload)
-        //{
-        //    if (fileToUpload != null)
-        //    {
-        //        MemoryStream target = new MemoryStream();
-        //        fileToUpload.InputStream.CopyTo(target);
-        //        byte[] fileBytes = target.ToArray();
-                
-        //        if (folderId != null)
-        //            fileBytes = StorageTree.DownloadDropboxFile(folderId);
-        //    }
-        //    return View();
-        //}
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Upload(string folderId, int source, HttpPostedFileBase fileToUpload)
+        {
+            if (fileToUpload != null)
+            {
+                MemoryStream target = new MemoryStream();
+                fileToUpload.InputStream.CopyTo(target);
+                byte[] fileBytes = target.ToArray();
+
+                if(source == StorageService.ServiceTypes.GoogleDrive)
+                {
+                    FileModel.DriveUpload(folderId, fileToUpload.FileName, fileBytes, fileToUpload.ContentType);
+                    return RedirectToAction("Drive", new { folderId = folderId, getFiles = true });
+                }
+                else if (source == StorageService.ServiceTypes.Dropbox)
+                {
+                    FileModel.DropboxUpload(folderId, fileToUpload.FileName, fileBytes);
+                    return RedirectToAction("DropBox", new { folderId = folderId, getFiles = true});
+                }
+            }
+            return RedirectToAction("Index");
+        }
 
         public FileResult DropboxDownload(string fileId)
         {
-            var x = StorageTree.DownloadDropboxFile(fileId);
+            var x = FileModel.DownloadDropboxFile(fileId);
             byte[] fileBytes = x.Item3;
             string fileName = x.Item1;
             string mime = MimeMapping.GetMimeMapping(x.Item1);
             return File(fileBytes, mime, fileName);
         }
+
+       
 
 
         //public ActionResult DropboxTree(string folderId, bool? queried)

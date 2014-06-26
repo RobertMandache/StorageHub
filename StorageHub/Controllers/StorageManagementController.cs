@@ -82,7 +82,7 @@ namespace StorageHub.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> DriveAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult> DriveAsync(CancellationToken cancellationToken, bool? createNew)
         {
             var result = await new AuthorizationCodeMvcApp(this, new StorageHub.Utility.DriveFlowMetadata()).
                     AuthorizeAsync(cancellationToken);
@@ -96,6 +96,18 @@ namespace StorageHub.Controllers
                 ApplicationName = "StorageHub"
             });
 
+            if(createNew != null && createNew == true)
+            {
+                string currentUserId = User.Identity.GetUserId();
+                var currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+                StorageService driveStorage = new StorageService()
+                {
+                    ServiceType = 1
+                };
+                currentUser.StorageServices.Add(driveStorage);
+                db.SaveChanges();
+            }
+
             Session["GoogleDriveStatus"] = StorageService.ServiceStatus.Connected;
             Session["GoogleDriveService"] = driveService;
             
@@ -104,15 +116,7 @@ namespace StorageHub.Controllers
 
         public ActionResult DriveCreate()
         {
-            string currentUserId = User.Identity.GetUserId();
-            var currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
-            StorageService driveService = new StorageService()
-            {
-                ServiceType = 1
-            };
-            currentUser.StorageServices.Add(driveService);
-            db.SaveChanges();
-            return RedirectToAction("DriveAsync");
+            return RedirectToAction("DriveAsync", new { createNew = true});
         }
 
         public ActionResult DropboxCreate()
@@ -127,6 +131,11 @@ namespace StorageHub.Controllers
 
         public ActionResult DropboxCallback(string code, string state)
         {
+            if (code == null)
+            {
+                ViewBag.Message = "Application not authorized to acces user's files";
+                return RedirectToAction("Manage", "StorageManagement");
+            }
             var t = Session["DropboxStateString"];
             if (!state.Equals(Session["DropboxStateString"]))
                 return new HttpUnauthorizedResult();
