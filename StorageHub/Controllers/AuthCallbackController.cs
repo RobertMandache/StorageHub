@@ -12,5 +12,11 @@ namespace StorageHub.Controllers
         {
             get { return new StorageHub.Utility.DriveFlowMetadata(); }
         }
+
+        protected override ActionResult OnTokenError(Google.Apis.Auth.OAuth2.Responses.TokenErrorResponse errorResponse)
+        {
+            ViewBag.Message = errorResponse.Error;
+            return RedirectToAction("Manage", "StorageManagement");
+        }
     }
 }

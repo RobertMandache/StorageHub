@@ -28,11 +28,14 @@ namespace StorageHub
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "813157725361099",
-            //   appSecret: "4d2693d2689c9142ef4d0ea4276b0ee9");
+            app.UseFacebookAuthentication(
+               appId: "813157725361099",
+               appSecret: "4d2693d2689c9142ef4d0ea4276b0ee9");
 
-            //app.UseGoogleAuthentication();
+            app.UseGoogleAuthentication(
+                clientId: "422569705562-m9cbq7o7jt38pln1kio27qg9u0qrvjsl.apps.googleusercontent.com",
+                clientSecret: "SY8I2NEOcj67wsUDGOf76ivL"
+                );
         }
     }
 }

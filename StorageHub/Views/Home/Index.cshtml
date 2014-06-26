@@ -4,9 +4,13 @@
 
 <div class="jumbotron">
     <h1>Storage Hub</h1>
-    <p>You haven't linked any Cloud Storage Services to this account</p>
-    Storage Hub currently supports Google Drive and Dropbox...Click here to get started!
-    @Html.ActionLink("Add Accounts", "Manage", "StorageManagement", null, new { @class = "btn btn-default"})
+    <p>Storage Hub allows you to manage multiple storage Cloud Storage Services in one place.</p>    
+    <p>Currently you do not have any Cloud Storage Services associated to your account.</p>
+    <p>Storage Hub currently supports the following services:</p>    
+    <p><img src="~/Images/googledrive-icon.png" height="40"/> Google Drive</p>
+    <p><img src="~/Images/dropbox-icon.png" height="40"/> Dropbox </p>
+    <p>Click here to get started!</p>
+    @Html.ActionLink("Add Accounts", "Manage", "StorageManagement", null, new { @class = "btn btn-primary btn-large"})
 </div>
 
 <div class="row">

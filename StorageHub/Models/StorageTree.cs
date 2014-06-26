@@ -248,17 +248,6 @@ namespace StorageHub.Models
             }
             return results;
         }
-
-        public static Tuple<string, string, byte[]> DownloadDropboxFile(string id)
-        {
-            var client = (DropNetClient)HttpContext.Current.Session["DropBoxClient"];
-            var metadata = client.GetMetaData(id);
-            if (metadata.Is_Dir == false)
-            {
-                byte[] fileBytes = client.GetFile(id);
-                return Tuple.Create(metadata.Name, metadata.Extension, fileBytes);
-            }
-            return null;
-        }
+        
     }
 }
