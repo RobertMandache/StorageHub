@@ -1,0 +1,41 @@
+﻿@model StorageHub.Models.StorageTree
+
+
+@{
+    var liclass = "";
+}
+@if(ViewBag.OpenFolder == Model.Id)
+{
+    liclass = "active";
+    ViewBag.Header = Model.Name;
+}
+<li class="@liclass">
+    @if(Model.Source == 1)
+    { 
+    <button class="btn btn-default btn-xs nav-btn" onclick="location.href = '@Url.Action("Drive", "Files", new { folderId = @Model.Id , queried = @Model.Queried}, Request.Url.Scheme)'"><i class="glyphicon glyphicon-chevron-right"></i></button>
+    }
+    @if (Model.Source == 2)
+    {
+    <button class="btn btn-default btn-xs nav-btn" onclick="location.href = '@Url.Action("Dropbox", "Files", new { folderId = @Model.Id, queried = @Model.Queried, getFiles = true }, Request.Url.Scheme)'"><i class="glyphicon glyphicon-chevron-right"></i></button>
+    }
+    @if (Model.Queried == false && Model.Source == 2)
+    { 
+    <a href="@Url.Action("Dropbox", "Files", new { folderId = @Model.Id, queried = @Model.Queried }, Request.Url.Scheme)" class="not-queried">@Model.Name</a>
+    }
+    else
+    {
+        <a href="#">@Model.Name</a>
+    }
+    @*@Html.ActionLink("-", "Drive", new { folderId = @Model.Id})*@
+    @*@Url.Action("Drive", "File", new { folderId = @Model.Id }, Request.Url.Scheme)*@
+    @if(Model.Subtree != null && @Model.Subtree.Count > 0)
+    {
+    <ul>
+        @foreach(var subfolder in Model.Subtree)
+        {        
+            @Html.EditorFor(m => subfolder)
+        }
+    </ul>
+    }
+</li>
+

@@ -13,8 +13,6 @@ namespace StorageHub.Models
         public int ServiceType { get; set; }
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
-        public string UserToken { get; set; }
-        public string UserSecret { get; set; }
 
         public List<int> getCurrentServices(string userId)
         {
